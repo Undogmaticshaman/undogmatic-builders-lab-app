@@ -12,13 +12,14 @@ A separate, installable application foundation for the Undogmatic Builders Lab m
 - Responsive desktop sidebar and mobile bottom navigation
 - Local persistence, install manifest, and an offline app shell
 - Portable Windows desktop package using the same React interface
+- Reproducible Android/iOS Capacitor setup and macOS Electron packaging commands
 - Accessible focus states, labels, keyboard-friendly controls, and reduced-motion support
 
 All people, messages, class details, and project details are sensible mock data. Enrollment, payments, authentication, live meetings, and external accounts are intentionally not connected.
 
 ## Run it
 
-Requirements: Node.js 20 or newer.
+Requirements: Node.js 22.12 or newer and npm 10 or newer. Android builds also need Android Studio; iPhone and Mac builds require macOS and the current Apple development tools.
 
 ```bash
 npm install
@@ -34,6 +35,7 @@ npm run build
 npm run preview
 npm run desktop:run
 npm run desktop:dist
+npm run mobile:doctor
 ```
 
 ## Architecture
@@ -46,7 +48,8 @@ The shared product is a React + TypeScript interface built by Vite. It uses web-
 - `src/hooks/usePersistentState.ts` — temporary on-device state boundary
 - `public/resources/` — downloadable member materials
 - `electron/` — secure Windows desktop shell
-- `build/` — Windows icon assets generated from the approved symbol PNG
+- `capacitor.config.ts` — shared Android/iOS native-container settings
+- `build/` — desktop icon assets generated from the approved symbol PNG
 - `docs/PACKAGING.md` — the mobile and desktop packaging path
 
 ## Brand symbol
@@ -61,7 +64,7 @@ The shared product is a React + TypeScript interface built by Vite. It uses web-
 - No claim or placeholder for video/audio class replays
 - No secrets or environment credentials
 
-See [docs/PACKAGING.md](docs/PACKAGING.md) before adding native shells.
+See [docs/PACKAGING.md](docs/PACKAGING.md) for the exact Windows, Android, iPhone, and Mac workflows and their signing boundaries.
 
 ## Contributing
 

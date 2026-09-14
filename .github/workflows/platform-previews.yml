@@ -1,0 +1,92 @@
+name: Build platform previews
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows portable preview
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run desktop:dist:windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: undogmatic-builders-lab-windows-preview
+          path: release/*.exe
+          if-no-files-found: error
+          retention-days: 14
+
+  android:
+    name: Android debug preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run mobile:add:android
+      - run: npm run mobile:sync:android
+      - run: ./gradlew assembleDebug
+        working-directory: android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: undogmatic-builders-lab-android-debug-preview
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  macos:
+    name: Mac preview
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run desktop:dist:mac -- --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: undogmatic-builders-lab-macos-preview
+          path: |
+            release/*.dmg
+            release/*.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  ios-simulator:
+    name: iPhone simulator check
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - run: npm ci
+      - run: npm run mobile:add:ios
+      - run: npm run mobile:sync:ios
+      - run: xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO
+        working-directory: ios/App

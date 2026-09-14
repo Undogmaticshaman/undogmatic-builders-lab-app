@@ -107,6 +107,12 @@ Keep signing material outside Git. Electron builder can read signing and notariz
 
 No mobile or desktop command connects authentication, payments, meetings, analytics, notifications, or real member data. The app continues to use mock content and device-local state. Review [SERVER-ARCHITECTURE.md](SERVER-ARCHITECTURE.md) before adding any connected service.
 
+## Manual hosted preview builds
+
+The source-controlled [platform preview workflow](../.github/workflows/platform-previews.yml) runs only when a repository maintainer manually starts it. It uses Windows, Linux, and macOS build machines to produce a Windows portable preview, an unsigned Android debug APK, and unsigned Mac DMG/ZIP previews. It also checks that the iPhone app builds for an iPhone simulator without signing.
+
+The workflow uploads temporary build artifacts for review; it does not create a GitHub Release, publish to any store, or have access to credentials. Treat all preview artifacts as testing builds. Public distribution still requires the signing, privacy, and account decisions below.
+
 ## Founder decisions before public native releases
 
 - Legal owner and final display name for each store listing.

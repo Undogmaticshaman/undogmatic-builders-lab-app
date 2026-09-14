@@ -21,9 +21,49 @@ The public repository can teach and improve the interface. A separate private se
 5. **Resources and transcripts** — normal resources can be public or member-only. Transcripts require a per-class attendance and consent decision, consistent with Builders Lab policy. No video or audio replay delivery is implied.
 6. **Audit and safety** — log administrative changes and access decisions; do not log private message content unnecessarily. Add backups, deletion handling, abuse reporting, and a documented incident process.
 
-## Recommended shape
+## Recommended private-server shape
 
-Use a managed web/API service with a relational database and server-side access rules. Keep the client as the current React app. The server exposes a small versioned API for classes, announcements, chat, resources, and member builds. Store secrets only in the server environment—never in the client repository or desktop package.
+Create a separate private Cloudflare Worker named `undogmatic-builders-lab-api`. It is not a route or deployment change to the existing public Builders Lab website. Keep the current React/Electron/Capacitor app as the client, and expose only a small versioned API.
+
+| Part | Job | Why it stays private |
+| --- | --- | --- |
+| Worker API | Session checks, role checks, class and announcement reads, protected join-link delivery | It holds the policy that decides who may see member material. |
+| D1 database | Members, roles, classes, announcements, resource rules, attendance/consent decisions, member-build progress, audit events | This is the durable record for the class—not mock browser storage. |
+| One Durable Object per chat channel | Real-time messages and WebSocket connections for one channel at a time | A room is the coordination unit; do not put every class conversation into one global room. |
+| R2 storage | Private transcript/resource files after eligibility is confirmed | It avoids putting member-only files inside the public application bundle. |
+| Auth provider | Signed member identity before any protected request | Never trust a member ID or staff role supplied by the browser. |
+
+Cloudflare documents Durable Objects as a fit for coordinated real-time chat, with each object having a globally unique name and strongly consistent storage. New Durable Objects should use SQLite-backed storage. See the official [Durable Objects overview](https://developers.cloudflare.com/durable-objects/) and [API reference](https://developers.cloudflare.com/durable-objects/api/).
+
+### First API contract
+
+The first server release should be deliberately small:
+
+```text
+GET  /v1/me
+GET  /v1/classes/next
+POST /v1/classes/:id/join-link       (eligible member only)
+GET  /v1/announcements
+GET  /v1/resources
+GET  /v1/resources/:id/download      (checks resource rule first)
+GET  /v1/build
+PUT  /v1/build
+WS   /v1/chat/:channel               (signed-in member, one Durable Object per channel)
+POST /v1/chat/:channel/report
+```
+
+`GET /v1/classes/next` can safely return the class title, time, and preparation note. `POST /v1/classes/:id/join-link` must make the eligibility decision on the server and only then return a short-lived room link. This keeps a meeting URL out of the public app bundle and browser storage.
+
+### Data boundaries
+
+- Keep direct-message content out of broad audit logs. Audit decisions such as an announcement publish, role change, resource access denial, or moderation action instead.
+- Store transcript attendance and consent as distinct facts. A paid membership or meeting attendance alone does not prove transcript permission.
+- Rate-limit message creation, preserve reports for moderators, and set a documented retention/deletion period before inviting members.
+- Keep API keys, signing secrets, database IDs, meeting links, and R2 credentials only in the private Worker environment. They do not belong in the Electron package, mobile app, public repository, or `wrangler` configuration.
+
+### Deployment boundary
+
+When the founder decisions below are approved, create the Worker in its own private deployment project and run it first in a non-production environment with test accounts only. Generate Worker binding types from its actual configuration, keep a current compatibility date, enable observability, and use secrets through the deployment environment. Do not attach it to the existing public site or import real members during the first test.
 
 ## Decisions required before implementation
 

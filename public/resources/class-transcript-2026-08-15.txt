@@ -1,0 +1,30 @@
+UNDOGMATIC BUILDERS LAB
+Attendee Transcript — August 15, 2026
+From Repeated Task to First Workflow
+
+This is sample foundation-stage content provided to demonstrate the transcript library.
+
+FACILITATOR
+Today we are choosing one repeated task and making the steps visible. We are not trying to automate everything. We are looking for the smallest version that becomes useful.
+
+ATTENDEE
+How do I know whether my project is small enough?
+
+FACILITATOR
+Ask whether you can try the first version with one real example this week. If not, remove an output, a connection, or a special case.
+
+EXERCISE
+1. Name the task in everyday language.
+2. Write down what a useful result looks like.
+3. Gather one safe, real example.
+4. List only the steps that happen every time.
+5. Circle the next action you can complete in one sitting.
+
+ATTENDEE
+Should the AI send the result automatically?
+
+FACILITATOR
+Not in the first version. Start with a draft that you review. Once the result is dependable and the consequences are understood, you can decide whether more automation is appropriate.
+
+KEY TAKEAWAY
+A clear, reviewed draft is already a useful build. Earn complexity through use.

@@ -1,0 +1,17 @@
+{
+  "name": "Undogmatic Builders Lab",
+  "short_name": "Builders Lab",
+  "description": "A calm place to learn, build, and keep moving.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0d0c",
+  "theme_color": "#0b0d0c",
+  "icons": [
+    {
+      "src": "./undogmatic-symbol.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

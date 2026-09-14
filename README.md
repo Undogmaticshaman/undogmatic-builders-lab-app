@@ -73,4 +73,6 @@ This repository intentionally runs with mock data and device-local state. The pr
 
 ## License
 
-An open-source license has not been selected yet. The source is public for review and discussion, but reuse and redistribution terms remain a founder decision. Contributors should wait for the selected license before relying on permission to reuse the project outside this collaboration.
+The source code is licensed under the [Apache License 2.0](LICENSE). It allows use, modification, and distribution while requiring the license and notices to be kept and changes to be identified.
+
+Undogmatic, Undogmatic Builders Lab, and their associated symbols are not licensed for use as names, logos, endorsements, or branding for derivative projects. Forks should use their own name and visual identity.

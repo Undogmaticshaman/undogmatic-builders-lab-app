@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "A calm member workspace for learning, building, and moving forward with Undogmatic Builders Lab.",
   "author": "Undogmatic",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {

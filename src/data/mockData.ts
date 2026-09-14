@@ -1,7 +1,8 @@
 import type { ChatMessage, Resource, StarterTopic } from "../types";
+import { getNextBuildersLabClassStart } from "../utils/date";
 
 export const nextClass = {
-  startsAt: "2026-09-05T17:00:00Z",
+  startsAt: getNextBuildersLabClassStart(),
   topic: "Build a simple workflow that gives you your week back",
   description:
     "Bring one repeated task from your week. We’ll turn it into a clear, reusable process together—one small step at a time.",

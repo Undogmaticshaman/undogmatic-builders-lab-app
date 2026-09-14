@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { announcements, nextClass } from "../data/mockData";
 import { usePersistentState } from "../hooks/usePersistentState";
 import type { AppView } from "../types";
-import { getLocalClassTime } from "../utils/date";
+import { getClassDateBadge, getLocalClassTime } from "../utils/date";
 
 type HomeScreenProps = { onNavigate: (view: AppView) => void };
 
@@ -26,6 +26,7 @@ const announcementViews: Record<string, AppView> = {
 
 export function HomeScreen({ onNavigate }: HomeScreenProps) {
   const localTime = getLocalClassTime(nextClass.startsAt);
+  const classDateBadge = getClassDateBadge(nextClass.startsAt);
   const todayLabel = new Intl.DateTimeFormat(undefined, {
     weekday: "long",
     month: "long",
@@ -60,8 +61,8 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
         </div>
         <div className="class-card__body">
           <div className="class-card__date" aria-hidden="true">
-            <span>SEP</span>
-            <strong>05</strong>
+            <span>{classDateBadge.month}</span>
+            <strong>{classDateBadge.day}</strong>
           </div>
           <div className="class-card__details">
             <p className="class-card__datetime">
